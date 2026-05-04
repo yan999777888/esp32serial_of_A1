@@ -1,6 +1,6 @@
 /*
  * @Filename: include/uart_protocol.h
- * @Description: ESP32-S3 侧的 UART 协议定义 (与 Flins A1 对应)
+ * @Description: ESP32-S3 侧的 UART 协议定义 (与 A1 对应)
  */
 #pragma once
 
@@ -19,6 +19,9 @@ typedef enum {
     CMD_ALERT_LOW       = 0x20,   // [提醒级] 业务报警
     CMD_ALERT_MID       = 0x21,   // [报警级] 业务报警
     CMD_ALERT_HIGH      = 0x22,   // [紧急级] 业务报警
+    CMD_IMG_START       = 0x30,   // 图像帧开始
+    CMD_IMG_DATA        = 0x31,   // 图像数据分包
+    CMD_IMG_END         = 0x32,   // 图像帧结束
     CMD_ACK             = 0x80,   // 应答
     CMD_SET_THRESHOLD   = 0x81    // 阈值设置
 } UartCmd_t;
@@ -42,4 +45,11 @@ typedef struct {
     uint16_t target_x;      // 目标坐标 X
     uint16_t target_y;      // 目标坐标 Y
 } UartAlertPayload_t;
+
+// 图像帧开始结构体 (8字节)
+typedef struct {
+    uint32_t total_len;     // JPEG数据总长度
+    uint16_t width;         // 图像宽度
+    uint16_t height;        // 图像高度
+} UartImgStart_t;
 #pragma pack(pop)
